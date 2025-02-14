@@ -1,0 +1,24 @@
+{
+  "name": "naturaai",
+  "version": "1.0.0",
+  "description": "A project for NaturaAI with a Hugging Face API call",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^13.0.0",  // Next.js의 최신 버전 (버전은 변경될 수 있음)
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "node-fetch": "^2.6.1"  // node-fetch는 API 호출을 위한 라이브러리입니다.
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",  // ESLint 설정 (옵션)
+    "eslint-config-next": "^13.0.0"  // Next.js의 ESLint 설정
+  },
+  "engines": {
+    "node": "16.x"  // Node.js 버전 설정
+  }
+}
