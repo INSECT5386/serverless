@@ -1,34 +1,26 @@
 export default async function handler(req, res) {
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',  // 허용할 도메인
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Origin': '*',  // 모든 출처에서의 요청 허용
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',  // 허용되는 HTTP 메소드
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',  // 허용되는 헤더
   };
 
+  // OPTIONS 요청에 대한 처리 (CORS preflight 요청)
   if (req.method === 'OPTIONS') {
-    // OPTIONS 요청에 대해 204 상태코드 반환
     return res.status(204).send('');
   }
 
   if (req.method === 'POST') {
     try {
       const requestBody = req.body || {};
-
-      // 입력값이 없으면 기본값을 사용하도록
       const userInput = requestBody.inputs && requestBody.inputs.trim() !== "" ? requestBody.inputs : "입력값을 제공해주세요.";
-
-      // 너무 긴 입력은 잘라서 처리
       const MAX_INPUT_LENGTH = 1000; // 입력 길이 제한
       const trimmedInput = userInput.length > MAX_INPUT_LENGTH ? userInput.slice(0, MAX_INPUT_LENGTH) : userInput;
-
       const apiUrl = 'https://api-inference.huggingface.co/models/gpt2';
-
       const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('Request Timeout')), 60000));
+      const apiToken = process.env.API_TOKEN;
 
-      const apiToken = process.env.API_TOKEN;  // 환경 변수로 API 토큰 관리
-
-      // Hugging Face API 호출
       const fetchRequest = fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -37,13 +29,12 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           inputs: trimmedInput,
-          max_length: 150, // 출력 길이 제한
-          temperature: 0.7, // 무작위성 정도
-          top_p: 0.9, // nucleus sampling 비율
+          max_length: 150,
+          temperature: 0.7,
+          top_p: 0.9,
         }),
       });
 
-      // 요청 처리 시간 초과 설정
       const response = await Promise.race([fetchRequest, timeout]);
 
       if (!response.ok) {
@@ -53,7 +44,6 @@ export default async function handler(req, res) {
 
       const responseBody = await response.json();
       return res.status(200).json(responseBody);
-
     } catch (error) {
       return res.status(500).json({ error: '서버 내부 오류', details: error.message });
     }
