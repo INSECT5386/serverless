@@ -1,12 +1,13 @@
 export default async function handler(req, res) {
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',  // 이 부분을 추가
+    'Access-Control-Allow-Origin': 'https://insect5386.github.io',  // 허용할 도메인
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
 
   if (req.method === 'OPTIONS') {
+    // OPTIONS 요청에 대해 204 상태코드 반환
     return res.status(204).send('');
   }
 
@@ -27,6 +28,7 @@ export default async function handler(req, res) {
 
       const apiToken = process.env.API_TOKEN;  // 환경 변수로 API 토큰 관리
 
+      // Hugging Face API 호출
       const fetchRequest = fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -41,6 +43,7 @@ export default async function handler(req, res) {
         }),
       });
 
+      // 요청 처리 시간 초과 설정
       const response = await Promise.race([fetchRequest, timeout]);
 
       if (!response.ok) {
