@@ -8,7 +8,8 @@ export default async function handler(req, res) {
 
   // OPTIONS 요청에 대한 처리 (CORS preflight 요청)
   if (req.method === 'OPTIONS') {
-    return res.status(204).send('');
+    res.writeHead(204, headers);
+    return res.end();
   }
 
   if (req.method === 'POST') {
@@ -43,11 +44,14 @@ export default async function handler(req, res) {
       }
 
       const responseBody = await response.json();
+      res.writeHead(200, headers);  // 응답 헤더 설정
       return res.status(200).json(responseBody);
     } catch (error) {
+      res.writeHead(500, headers);  // 응답 헤더 설정
       return res.status(500).json({ error: '서버 내부 오류', details: error.message });
     }
   } else {
+    res.writeHead(405, headers);  // 응답 헤더 설정
     return res.status(405).json({ error: 'Only POST method is allowed' });
   }
 }
