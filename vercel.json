@@ -5,7 +5,24 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "*"
+          "value": "https://serverless-theta-two.vercel.app"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    },
+    {
+      "source": "/api/handler",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://serverless-git-main-insect5386s-projects.vercel.app"
         },
         {
           "key": "Access-Control-Allow-Methods",
