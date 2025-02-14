@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://insect5386.github.io',  // 허용할 도메인
+    'Access-Control-Allow-Origin': '*',  // 허용할 도메인
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
